@@ -1,14 +1,36 @@
-from flask import Flask, request, send_from_directory
+from flask import Flask, request
+from dotenv import load_dotenv
+
 from src.utils import Response, genToken, decodeToken
-import os
+from src.handlers.static import serveStaticContent, serveStaticUser, uploadStaticUser
+
+load_dotenv()
 
 app = Flask(__name__)
 
+# ---- Health CHeck ----
 @app.route("/status", methods=["GET"])
-def status():
+def get_status():
     return Response({
         "status": "ok",
     })
+    
+# ---- Static ----
+@app.route("/static/content/<filename>", methods=["GET"])
+def get_static_content(filename):
+    return serveStaticContent(filename)
+
+@app.route("/static/user/<filename>", methods=["GET"])
+def get_static_user(filename):
+    return serveStaticUser(filename)
+
+@app.route("/static/upload", methods=["POST"])
+def post_static_upload():
+    return uploadStaticUser()
+
+
+
+
 
 @app.route("/token", methods=["GET"])
 def token():
@@ -40,25 +62,6 @@ def check():
         return Response({"error":"user_id invalido"})
     
     return Response({"message": "Acceso autorizado", "user_id": user_data['user_id']})
-
-@app.route("/static/<filename>")
-def serve_static(filename):
-        if not ("." in filename and "/" in filename and filename.rsplit(".", 1)[1].lower() in {"png", "jpg", "webp", "jpeg", "webm"}):
-            return Response({
-                "error": "Not Found",
-                "message": "El recurso que buscas no fue encontrado."
-            }, 404)
-            
-        directory = "/vat/static"
-        file = os.path.join(directory, filename)
-        
-        if not os.path.isfile(file):
-            return Response({
-                "error": "Not Found",
-                "message": "El recurso que buscas no fue encontrado."
-            }, 404)
-        
-        return send_from_directory(directory, filename)
     
 # Errores
 @app.errorhandler(404)

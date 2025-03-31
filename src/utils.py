@@ -1,8 +1,7 @@
 from flask import make_response, jsonify
 import jwt
 import datetime
-
-JWT_TOKEN = "1yjbcYUoo5xrzHlZERCLXKtqTqm4D5KaWU2ES4O2dHv5E8RCAL6AqkSFuHKgJyuJ"
+import os
 
 def Response(data=None, statusCode=200, headers={"Content-Type": "application/json"}):
     if data is None:
@@ -20,13 +19,13 @@ def genToken(user_id):
         'exp': datetime.datetime.utcnow() + expiration_time
     }
 
-    token = jwt.encode(payload, JWT_TOKEN, algorithm='HS256')
+    token = jwt.encode(payload, os.getenv("JWT_TOKEN"), algorithm='HS256')
     
     return token
 
 def decodeToken(token):
     try:
-        payload = jwt.decode(token, JWT_TOKEN, algorithms=['HS256'])
+        payload = jwt.decode(token, os.getenv("JWT_TOKEN"), algorithms=['HS256'])
         return payload
     except jwt.ExpiredSignatureError:
         return None
