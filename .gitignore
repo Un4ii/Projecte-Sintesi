@@ -1,0 +1,39 @@
+# Ignorar el entorno virtual
+venv/
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Archivos de dependencias
+*.egg-info/
+*.dist-info/
+*.egg
+
+# Archivos de configuración de IDEs comunes
+.vscode/
+.idea/
+
+# Logs y archivos temporales
+*.log
+*.pot
+*.swp
+*.bak
+
+# Archivos generados por el sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos de distribución
+dist/
+build/
+*.tar.gz
+*.whl
+
+# Configuración de tests
+.coverage
+nosetests.xml
+coverage.xml
+*.cover
