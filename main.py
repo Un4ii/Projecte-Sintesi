@@ -1,8 +1,8 @@
 from flask import Flask, request
 from dotenv import load_dotenv
 
-from src.utils import Response, genToken, decodeToken
-from src.handlers.static import serveStaticContent, serveStaticUser, uploadStaticUser
+from utils.utils import Response, genToken
+from handlers.static import serveStaticContent, serveStaticUser, uploadStaticUser
 
 load_dotenv()
 
@@ -28,6 +28,8 @@ def get_static_user(filename):
 def post_static_upload():
     return uploadStaticUser()
 
+
+# ---- Profile ----
 
 
 

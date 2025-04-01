@@ -1,8 +1,6 @@
-from src.utils import Response
+from utils.utils import Response, decodeToken
 from flask import send_from_directory, request
 import os
-
-from src.utils import decodeToken
 
 def serveStaticUser(filename):
     allowed_extensions = {"png", "jpg", "webp", "jpeg", "webm"}
