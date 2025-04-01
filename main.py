@@ -32,9 +32,11 @@ def post_static_upload():
 
 
 
+
+
 @app.route("/token", methods=["GET"])
 def token():
-    user_id = request.args.get("user_id")
+    user_id = request.args.get("user")
 
     if not user_id: 
         return Response({"error":"user_id invalido"})
@@ -42,26 +44,6 @@ def token():
     return Response({
         "token": genToken(user_id),
     })
-    
-@app.route("/check", methods=["GET"])
-def check():
-    
-    token = request.headers.get('Authorization')
-    
-    if not token:
-        return Response({"error": "Token no proporcionado"}, statusCode=401)
-    
-    token = token.split(" ")[1]
-    user_data = decodeToken(token)
-    user_id = request.args.get("user_id")
-
-    if user_data is None:
-        return Response({"error": "Token invalido o expirado"}, statusCode=401)
-    
-    if user_id != user_data['user_id']:
-        return Response({"error":"user_id invalido"})
-    
-    return Response({"message": "Acceso autorizado", "user_id": user_data['user_id']})
     
 # Errores
 @app.errorhandler(404)
