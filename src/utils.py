@@ -11,6 +11,8 @@ def Response(data=None, statusCode=200, headers={"Content-Type": "application/js
     response.headers.update(headers)
     return response
 
+
+# ---- JWT ----
 def genToken(user_id):
     expiration_time = datetime.timedelta(hours=1)
 

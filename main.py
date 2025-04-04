@@ -1,8 +1,8 @@
 from flask import Flask, request
 from dotenv import load_dotenv
 
-from utils.utils import Response, genToken
-from handlers.static import serveStaticContent, serveStaticUser, uploadStaticUser
+from src.utils import Response, genToken
+from src.handlers.static import serveStaticContent, serveStaticUser, uploadStaticUser
 
 load_dotenv()
 
@@ -30,7 +30,9 @@ def post_static_upload():
 
 
 # ---- Profile ----
-
+@app.route("/user/profile/<username>", methods=["GET"])
+def get_user_profile(username):
+    pass
 
 
 
