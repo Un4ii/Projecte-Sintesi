@@ -60,12 +60,46 @@ def uploadStaticUser():
         }, 400)
 
     directory = os.path.join(os.getenv("STATIC_PATH"), "user")
-
-    file_path = os.path.join(directory, f"{token_response}.{ext}")
     os.makedirs(directory, exist_ok=True)
+    
+    file_path = os.path.join(directory, f"{token_response}.{ext}")
+    
+    if os.path.exists(file_path):
+        os.remove(file_path)
+    
     file.save(file_path)
 
     return Response({
         "message": "File uploaded successfully.",
         "filename": file.filename
     }, 201)
+
+def deleteStaticUser():
+    token_ok, token_response = decodeToken(request.headers.get("Authorization"), request.headers.get("user"))
+    
+    if not token_ok:
+        return Response({
+            "error": "Bad authorization",
+            "message": token_response
+        }, 401)
+
+    directory = os.path.join(os.getenv("STATIC_PATH"), "user")
+    allowed_extensions = {"png", "jpg", "webp", "jpeg", "webm"}
+    file_deleted = False
+    
+    for ext in allowed_extensions:
+        file_path = os.path.join(directory, f"{token_response}.{ext}")
+        if os.path.exists(file_path):
+            os.remove(file_path)
+            file_deleted = True
+            break
+
+    if file_deleted:
+        return Response({
+            "message": "File deleted successfully."
+        }, 200)
+    else:
+        return Response({
+            "error": "Not Found",
+            "message": "No file found to delete."
+        }, 404)

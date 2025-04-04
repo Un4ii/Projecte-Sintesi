@@ -2,7 +2,7 @@ from flask import Flask, request
 from dotenv import load_dotenv
 
 from src.utils import Response, genToken
-from src.handlers.static import serveStaticContent, serveStaticUser, uploadStaticUser
+from src.handlers.static import serveStaticContent, serveStaticUser, uploadStaticUser, deleteStaticUser
 from src.handlers.other import getAllergies, getAllAllergies, getIntolerances, getAllIntolerances
 from src.handlers.user import getUserProfile 
 
@@ -29,6 +29,10 @@ def get_static_user(user_id):
 @app.route("/static/upload", methods=["POST"])
 def post_static_upload():
     return uploadStaticUser()
+
+@app.route("/static/delete", methods=["GET"])
+def post_static_delete():
+    return deleteStaticUser()
 
 
 # ---- Others ----
