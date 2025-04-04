@@ -12,10 +12,7 @@ def serveStaticUser(filename):
         if os.path.isfile(file):
             return send_from_directory(directory, f"{filename}.{ext}")
     
-    return Response({
-        "error": "Not Found",
-        "message": "El recurso que buscas no fue encontrado."
-    }, 404)
+    return send_from_directory(directory, "default.png")
         
     
 def serveStaticContent(filename):
@@ -33,7 +30,6 @@ def serveStaticContent(filename):
     }, 404)
     
 def uploadStaticUser():
-    
     token_ok, token_response = decodeToken(request.headers.get("Authorization"), request.headers.get("user"))
     
     if not token_ok:

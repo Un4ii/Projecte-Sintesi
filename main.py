@@ -3,6 +3,8 @@ from dotenv import load_dotenv
 
 from src.utils import Response, genToken
 from src.handlers.static import serveStaticContent, serveStaticUser, uploadStaticUser
+from src.handlers.other import getAllergies, getAllAllergies, getIntolerances, getAllIntolerances
+from src.handlers.user import getUserProfile 
 
 load_dotenv()
 
@@ -16,23 +18,40 @@ def get_status():
     })
     
 # ---- Static ----
-@app.route("/static/content/<filename>", methods=["GET"])
-def get_static_content(filename):
-    return serveStaticContent(filename)
+@app.route("/static/content/<user_id>", methods=["GET"])
+def get_static_content(user_id):
+    return serveStaticContent(user_id)
 
-@app.route("/static/user/<filename>", methods=["GET"])
-def get_static_user(filename):
-    return serveStaticUser(filename)
+@app.route("/static/user/<user_id>", methods=["GET"])
+def get_static_user(user_id):
+    return serveStaticUser(user_id)
 
 @app.route("/static/upload", methods=["POST"])
 def post_static_upload():
     return uploadStaticUser()
 
 
-# ---- Profile ----
-@app.route("/user/profile/<username>", methods=["GET"])
-def get_user_profile(username):
-    pass
+# ---- Others ----
+@app.route("/allergies", methods=["GET"])
+def get_other_allergies():
+    if request.args.get("id"):
+        return getAllergies()
+    else:
+        return getAllAllergies()
+    
+@app.route("/intolerances", methods=["GET"])
+def get_other_intolerances():
+    if request.args.get("id"):
+        return getIntolerances()
+    else:
+        return getAllIntolerances()
+
+
+# ---- User ----
+@app.route("/user/profile/<user_id>", methods=["GET"])
+def get_user_profile(user_id):
+    return getUserProfile(user_id)
+
 
 
 
